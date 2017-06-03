@@ -32,7 +32,15 @@ GameState.prototype.preload = function() {
     this.game.load.audio('pickupSound', 'assets/sounds/pickup.wav');
     this.game.load.audio('playerDeath', 'assets/sounds/hurt3.ogg');
     this.game.load.audio('enemyDeath', 'assets/sounds/hit2.ogg');
-    this.game.load.audio('music', 'assets/sounds/mystery.wav');
+    //this.game.load.audio('music', 'assets/sounds/mystery.wav');
+
+    this.game.load.audio('music', 'assets/sounds/Mathew Pablo Caketown - OpenGameArt.ogg');
+    this.game.load.audio('music2', 'assets/sounds/Mathew Pablo - Curious Critters (Extended Version) - OpenGameArt.ogg');
+    this.game.load.audio('menuMusic', 'assets/sounds/Bruno Belotti - Polka_Loop - OpenGameArt.org.ogg');
+    this.game.load.audio('jumpRope', 'assets/sounds/YoFrankie! (c) 2008, Blender Foundation - Cartoony Jump and Bounce - OpenGameArt.org.ogg');
+    this.game.load.audio('selectSound1', 'assets/sounds/ViRiX - Menu and Item Jingles Sampe 2 - OpenGameArt - Menu2A.ogg');
+    this.game.load.audio('selectSound2', 'assets/sounds/ViRiX - Menu and Item Jingles Sampe 2 - OpenGameArt.org - Item2A.ogg');
+    this.game.load.audio('selectSound3', 'assets/sounds/NenadSimic - Menu Selection Click - OpenGameArt.ogg');
 }
 
 GameState.prototype.create = function() { 
