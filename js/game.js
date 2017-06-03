@@ -13,23 +13,26 @@ var GameState = function(game) {};
 // preload: carregar todos os assets necessários para esta scene ou para as próximas
 GameState.prototype.preload = function() {
     // Para carregar um sprite, basta informar uma chave e dizer qual é o arquivo
-    this.game.load.image('mapTiles', 'Assets/spritesheets/tiles.png');
+    //this.game.load.image('mapTiles', 'assets/spritesheets/tiles.png');
+    this.game.load.image('mapTiles', 'assets/spritesheet_glutony.png');
 
     // Para carregar um spritesheet, é necessário saber a altura e largura de cada sprite, e o número de sprites no arquivo
     // No caso do player.png, os sprites são de 32x32 pixels, e há 8 sprites no arquivo
-    this.game.load.spritesheet('player', 'Assets/spritesheets/player.png', 32, 32, 8);
-    this.game.load.spritesheet('items', 'Assets/spritesheets/items.png', 32, 32, 16);
-    this.game.load.spritesheet('enemies', 'Assets/spritesheets/enemies.png', 32, 32, 12);
+    //this.game.load.spritesheet('player', 'assets/spritesheets/player.png', 32, 32, 8);
+    this.game.load.spritesheet('player', 'assets/player.png', 32, 32);
+    this.game.load.spritesheet('items', 'assets/spritesheets/items.png', 32, 32, 16);
+    this.game.load.spritesheet('enemies', 'assets/spritesheets/enemies.png', 32, 32, 12);
     
     // Para carregar um arquivo do Tiled, o mesmo precisa estar no formato JSON
-    this.game.load.tilemap('level1', 'Assets/maps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    //this.game.load.tilemap('level1', 'assets/maps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('level1', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
 
     // Para carregar os sons, basta informar a chave e dizer qual é o arquivo
-    this.game.load.audio('jumpSound', 'Assets/sounds/jump.wav');
-    this.game.load.audio('pickupSound', 'Assets/sounds/pickup.wav');
-    this.game.load.audio('playerDeath', 'Assets/sounds/hurt3.ogg');
-    this.game.load.audio('enemyDeath', 'Assets/sounds/hit2.ogg');
-    this.game.load.audio('music', 'Assets/sounds/mystery.wav');
+    this.game.load.audio('jumpSound', 'assets/sounds/jump.wav');
+    this.game.load.audio('pickupSound', 'assets/sounds/pickup.wav');
+    this.game.load.audio('playerDeath', 'assets/sounds/hurt3.ogg');
+    this.game.load.audio('enemyDeath', 'assets/sounds/hit2.ogg');
+    this.game.load.audio('music', 'assets/sounds/mystery.wav');
 }
 
 GameState.prototype.create = function() { 
@@ -44,14 +47,14 @@ GameState.prototype.create = function() {
     // 2 - Adicionar as imagens correspondentes aos tilesets do Tiled dentro do Phaser
     // "tiles" é o nome do tileset dentro do Tiled
     // "mapTiles" é o nome da imagem com os tiles, carregada no preload()
-    this.level1.addTilesetImage('tiles', 'mapTiles');
+    this.level1.addTilesetImage('spritesheet_glutony', 'mapTiles');
     
     // 3 - Criar os layers do mapa
     // A ordem nesse caso é importante, então os layers que ficarão no "fundo" deverão ser
     // criados primeiro, e os que ficarão na "frente" por último;
-    this.bgLayer = this.level1.createLayer('BG');
-    this.lavaLayer = this.level1.createLayer('Lava');
-    this.wallsLayer = this.level1.createLayer('Walls');
+    this.bgLayer = this.level1.createLayer('background');
+    this.lavaLayer = this.level1.createLayer('middleground');
+    this.wallsLayer = this.level1.createLayer('foreground');
     // Mais informações sobre tilemaps:
     // https://photonstorm.github.io/phaser-ce/#toc14
 
@@ -79,17 +82,21 @@ GameState.prototype.create = function() {
     // Como estamos usando um spritesheet, é necessário informar qual sprite vamos usar
     // A contagem é da mesma forma do que nos tiles do mapa, mas o primeiro sprite recebe
     // o número 0 ao invés de 1.
-    this.player = this.game.add.sprite(160, 64, 'player', 5);
+    // aqui 
+    this.player = this.game.add.sprite(200, 131, 'player', 1);
     // Ajustando âncora do jogador (ponto de referência para posicionamento)
     this.player.anchor.setTo(0.5, 0.5);
     // Ativando física para o jogador
+    // aqui
     this.game.physics.enable(this.player);
     // Ativando gravidade para o jogador
     // Como é positiva no eixo Y, o jogador terá uma gravidade "normal",
     // ou seja, irá acelerar para baixo
+    //aqui	
     this.player.body.gravity.y = 750;
     // Como o "mundo" é maior do que a área visível, é necessário que a câmera siga o jogador.
     // https://photonstorm.github.io/phaser-ce/Phaser.Camera.html#follow
+    //aqui 
     this.game.camera.follow(this.player);
     
     // Animações do jogador
@@ -97,9 +104,12 @@ GameState.prototype.create = function() {
     // Para criar uma animação, utilizamos animations.add()
     // Parâmetros: nome da animação, lista de quadros, quadros por segundo da animação
     // https://photonstorm.github.io/phaser-ce/Phaser.AnimationManager.html
-    this.player.animations.add('walk', [0, 1, 2, 1], 6);
-    this.player.animations.add('idle', [5, 5, 5, 5, 5, 5, 6, 5, 6, 5], 6);
-    this.player.animations.add('jump', [4], 6);
+    // aqui 
+    this.player.animations.add('walk', [2, 3, 2], 12);
+    this.player.animations.add('idle', [2]);
+    this.player.animations.add('jump', [0]);
+    /*
+    */
     
     // Adicionando entradas
     // createCursorKeys() cria automaticamente mapeamentos para as 4 teclas de direção
@@ -124,18 +134,19 @@ GameState.prototype.create = function() {
     // grupo - qual grupo do Phaser devemos adicionar esses objetos
     
     // Grupo de diamantes
-    this.diamonds = this.game.add.physicsGroup();
-    this.level1.createFromObjects('Items', 'diamond', 'items', 5, true, false, this.diamonds);
+    //this.diamonds = this.game.add.physicsGroup();
+    //this.level1.createFromObjects('Items', 'diamond', 'items', 5, true, false, this.diamonds);
     // Para cada objeto do grupo, vamos executar uma função
-    this.diamonds.forEach(function(diamond){
-        // body.immovable = true indica que o objeto não é afetado por forças externas
-        diamond.body.immovable = true;
+    //this.diamonds.forEach(function(diamond){
+        //// body.immovable = true indica que o objeto não é afetado por forças externas
+        //diamond.body.immovable = true;
         // Adicionando animações; o parâmetro true indica que a animação é em loop
-        diamond.animations.add('spin', [4, 5, 6, 7, 6, 5], 6, true);
-        diamond.animations.play('spin');
-    });
+        //diamond.animations.add('spin', [4, 5, 6, 7, 6, 5], 6, true);
+        //diamond.animations.play('spin');
+    //});
 
     // Grupo de morcegos:
+    /*
     this.bats = this.game.add.physicsGroup();
     this.level1.createFromObjects('Enemies', 'bat', 'enemies', 8, true, false, this.bats);
     this.bats.forEach(function(bat){
@@ -143,12 +154,13 @@ GameState.prototype.create = function() {
         bat.body.immovable = true;
         bat.animations.add('fly', [8, 9, 10], 6, true);
         bat.animations.play('fly');
+	*/
         // Velocidade inicial do inimigo
-        bat.body.velocity.x = 100;
+        //bat.body.velocity.x = 100;
         // bounce.x=1 indica que, se o objeto tocar num objeto no eixo x, a força deverá
         // ficar no sentido contrário; em outras palavras, o objeto é perfeitamente elástico
-        bat.body.bounce.x = 1;
-    });
+        //bat.body.bounce.x = 1;
+    //});
 
     // Criando assets de som com this.game.add.audio()
     // O parâmetro é o nome do asset definido no preload()
@@ -172,7 +184,7 @@ GameState.prototype.create = function() {
     
     // Estado do jogo - Variáveis para guardar quaisquer informações pertinentes para as condições de 
     // vitória/derrota, ações do jogador, etc
-    this.totalDiamonds = this.diamonds.length;
+    //this.totalDiamonds = this.diamonds.length;
     this.collectedDiamonds = 0;
     this.score = 0;
 }
@@ -182,6 +194,7 @@ GameState.prototype.update = function() {
     // Todas as colisões entre os objetos do jogo são avaliadas com arcade.collide() ou 
     // arcade.overlap(). O Phaser irá automaticamente calcular a colisão dos objetos
     // Inicialmente, adicionando colisões do player com as paredes da fase, que é um layer:
+    // aqui
     this.game.physics.arcade.collide(this.player, this.wallsLayer);
 
     // Adicionando colisões do jogador com outros elementos, onde há uma função de tratamento
@@ -189,14 +202,15 @@ GameState.prototype.update = function() {
     // sempre que essa quando essa colisão ocorrer; este callback receberá os 2 objetos que 
     // colidiram; veremos mais abaixo na implementação
     // Colisão com a lava - o jogador morre
+    // aqui 
     this.game.physics.arcade.collide(this.player, this.lavaLayer, this.lavaDeath, null, this);
     // Colisão com os diamantes - devem ser coletados
-    this.game.physics.arcade.overlap(this.player, this.diamonds, this.diamondCollect, null, this);
+    //this.game.physics.arcade.overlap(this.player, this.diamonds, this.diamondCollect, null, this);
     // Colisão com os morcegos - depende de como foi a colisão, veremos abaixo
-    this.game.physics.arcade.overlap(this.player, this.bats, this.batCollision, null, this);
+    //this.game.physics.arcade.overlap(this.player, this.bats, this.batCollision, null, this);
     
     // Adicionando colisão entre os morcegos e as paredes
-    this.game.physics.arcade.collide(this.bats, this.wallsLayer);
+    // this.game.physics.arcade.collide(this.bats, this.wallsLayer);
     
     // Movimentação do player
     // Para detectar se uma das teclas referenciadas foi pressionada,
@@ -204,6 +218,7 @@ GameState.prototype.update = function() {
     // Caso seja a tecla para a esquerda, ajustar uma velocidade negativa
     // ao eixo X, que fará a posição X diminuir e consequentemente o jogador
     // ir para a esquerda;
+    
     if(this.keys.left.isDown){
         this.player.body.velocity.x = -150; // Ajustar velocidade
         // Se o jogador estiver virado para a direita, inverter a escala para que ele vire para o outro lado
@@ -223,7 +238,7 @@ GameState.prototype.update = function() {
     else {
         // Ajustar velocidade para zero
         this.player.body.velocity.x = 0;
-        this.player.animations.play('idle');
+        this.player.animations.play('idle'); //changoto 'idle'
     }
 
     // Se o a barra de espaço ou a tecla cima estiverem pressionadas, e o jogador estiver com a parte de baixo tocando em alguma coisa
@@ -236,23 +251,28 @@ GameState.prototype.update = function() {
 
     // Se o jogador não estiver no chão, inicie a animação 'jump'
     if(!this.player.body.touching.down && !this.player.body.onFloor()){
-        this.player.animations.play('jump');
+        this.player.animations.play('jump'); //changeto 'jump'
     }
+    /* aqui
+    */
     
     // Para cada morcego, verificar em que sentido ele está indo
     // Se a velocidade for positiva, a escala no eixo X será 1, caso
     // contrário -1
+    /*
     this.bats.forEach(function(bat){
        if(bat.body.velocity.x != 0) {
            // Math.sign apenas retorna o sinal do parâmetro: positivo retorna 1, negativo -1
            bat.scale.x = 1 * Math.sign(bat.body.velocity.x);
        }
     });
+    */
 }
 
 // Tratamento da colisão entre o jogador e os diamantes
 // As funções para esse fim sempre recebem os dois objetos que colidiram,
 // e então podemos manipular tais objetos
+/*
 GameState.prototype.diamondCollect = function(player, diamond){
     // Atualizando estado do jogo e HUD
     this.collectedDiamonds++;
@@ -266,6 +286,7 @@ GameState.prototype.diamondCollect = function(player, diamond){
     this.pickupSound.play(); // som de pegar o diamante
     diamond.kill(); // removendo o diamante do jogo
 }
+*/
 
 // Tratamento da colisão entre o jogador e os diamantes
 GameState.prototype.batCollision = function(player, bat){
