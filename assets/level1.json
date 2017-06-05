@@ -32,8 +32,42 @@
          "width":100,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"Items",
+         "objects":[
+                {
+                 "gid":53,
+                 "height":32,
+                 "id":8,
+                 "name":"fruta",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":260,
+                 "y":305
+                }, 
+                {
+                 "gid":1,
+                 "height":32,
+                 "id":13,
+                 "name":"player",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":194,
+                 "y":348
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,

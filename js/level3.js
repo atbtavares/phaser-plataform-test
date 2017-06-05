@@ -8,10 +8,10 @@
 
 //Um estado é sempre um objeto JavaScript, com no mínimo as 3 funções principais: preload, create e update
 //As funções sempre começam com NomeDoObjeto.prototype 
-var GameState = function(game) {};
+var Level3State = function(game) {};
 
 // preload: carregar todos os assets necessários para esta scene ou para as próximas
-GameState.prototype.preload = function() {
+Level3State.prototype.preload = function() {
     // Para carregar um sprite, basta informar uma chave e dizer qual é o arquivo
     //this.game.load.image('mapTiles', 'assets/spritesheets/tiles.png');
     this.game.load.image('mapTiles', 'assets/spritesheet_glutony.png');
@@ -25,8 +25,7 @@ GameState.prototype.preload = function() {
     this.game.load.spritesheet('enemies', 'assets/spritesheets/enemies.png', 32, 32, 12);
     
     // Para carregar um arquivo do Tiled, o mesmo precisa estar no formato JSON
-    //this.game.load.tilemap('level1', 'assets/maps/level1.json', null, Phaser.Tilemap.TILED_JSON);
-    this.game.load.tilemap('level1', 'assets/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap('level3', 'assets/level3.json', null, Phaser.Tilemap.TILED_JSON);
 
     // Para carregar os sons, basta informar a chave e dizer qual é o arquivo
     this.game.load.audio('jumpSound', 'assets/sounds/jump.wav');
@@ -45,7 +44,7 @@ GameState.prototype.preload = function() {
     this.respawn = game.add.group();
 }
 
-GameState.prototype.create = function() { 
+Level3State.prototype.create = function() { 
     // Inicializando sistema de física
     // o sistema Arcade é o mais simples de todos, mas também é o mais eficiente em termos de processamento.
     // https://photonstorm.github.io/phaser-ce/Phaser.Physics.Arcade.html
@@ -53,18 +52,20 @@ GameState.prototype.create = function() {
 
     // Para carregar o mapa do Tiled para o Phaser, 3 estágios são necessários:
     // 1 - Criar um objeto com o arquivo do Tiled carregado no preload()
-    this.level1 = this.game.add.tilemap('level1');
+    this.level3 = this.game.add.tilemap('level3');
     // 2 - Adicionar as imagens correspondentes aos tilesets do Tiled dentro do Phaser
     // "tiles" é o nome do tileset dentro do Tiled
     // "mapTiles" é o nome da imagem com os tiles, carregada no preload()
-    this.level1.addTilesetImage('spritesheet_glutony', 'mapTiles');
+    this.level3.addTilesetImage('spritesheet_glutony', 'mapTiles');
     
     // 3 - Criar os layers do mapa
     // A ordem nesse caso é importante, então os layers que ficarão no "fundo" deverão ser
     // criados primeiro, e os que ficarão na "frente" por último;
-    this.bgLayer = this.level1.createLayer('background');
-    this.lavaLayer = this.level1.createLayer('middleground');
-    this.wallsLayer = this.level1.createLayer('foreground');
+    this.skiesLayer = this.level3.createLayer('skies');
+    this.cloudLayer = this.level3.createLayer('clouds');
+    this.bgLayer = this.level3.createLayer('background');
+    this.lavaLayer = this.level3.createLayer('middleground');
+    this.wallsLayer = this.level3.createLayer('foreground');
     // Mais informações sobre tilemaps:
     // https://photonstorm.github.io/phaser-ce/#toc14
 
@@ -81,11 +82,11 @@ GameState.prototype.create = function() {
     // devem colidir, pois há mais tiles que colidem do que tiles sem colisão.
     // Os parâmetros são a lista dos tiles, "true" indicando que a colisão deve ser ativada,
     // e o nome do layer.
-    this.level1.setCollisionByExclusion([9, 10, 11, 12, 17, 18, 19, 20], true, this.wallsLayer);
+    this.level3.setCollisionByExclusion([9, 10, 11, 12, 17, 18, 19, 20], true, this.wallsLayer);
     
     // Para o layer de lava é o caso oposto: poucos tiles colidem, então é mais fácil 
     // informar diretamente quais são.
-    this.level1.setCollision([5, 6, 13], true, this.lavaLayer);
+    this.level3.setCollision([5, 6, 13], true, this.lavaLayer);
         
     // Inicializando jogador
     // Adicionando o sprite do jogador na posição (160, 64) usando o asset 'player'
@@ -93,8 +94,8 @@ GameState.prototype.create = function() {
     // A contagem é da mesma forma do que nos tiles do mapa, mas o primeiro sprite recebe
     // o número 0 ao invés de 1.
     // aqui 
-    this.level1.createFromObjects('Items', 'player', '', 0, true, false, this.respawn);
-    this.player = this.game.add.sprite(0, 0, 'player',1);
+    this.level3.createFromObjects('Items', 'player', '', 0, true, false, this.respawn);
+    this.player = this.game.add.sprite(0, 0, 'player', 1);
     // Ajustando âncora do jogador (ponto de referência para posicionamento)
     this.player.anchor.setTo(0.5, 0.5);
     // Ativando física para o jogador
@@ -110,6 +111,8 @@ GameState.prototype.create = function() {
     //aqui 
     this.game.camera.follow(this.player);
     this.respawn.forEach(function(spawnpoint){
+	console.log(spawnpoint.x);
+	console.log(spawnpoint.y);
 	this.player.reset(spawnpoint.x,spawnpoint.y);
     },this);
     
@@ -150,7 +153,7 @@ GameState.prototype.create = function() {
     
     // Grupo de diamantes
     this.frutas = this.game.add.physicsGroup();
-    this.level1.createFromObjects('Items', 'fruta', 'items', 51, true, false, this.frutas); // frutas 51 a 53
+    this.level3.createFromObjects('Items', 'fruta', 'items', 51, true, false, this.frutas); // frutas 51 a 53
     // Para cada objeto do grupo, vamos executar uma função
     this.frutas.forEach(function(fruta){
         // body.immovable = true indica que o objeto não é afetado por forças externas
@@ -163,7 +166,7 @@ GameState.prototype.create = function() {
     // Grupo de morcegos:
     /*
     this.bats = this.game.add.physicsGroup();
-    this.level1.createFromObjects('Enemies', 'bat', 'enemies', 8, true, false, this.bats);
+    this.level3.createFromObjects('Enemies', 'bat', 'enemies', 8, true, false, this.bats);
     this.bats.forEach(function(bat){
         bat.anchor.setTo(0.5, 0.5);
         bat.body.immovable = true;
@@ -185,10 +188,12 @@ GameState.prototype.create = function() {
     this.enemyDeathSound = this.game.add.audio('enemyDeath');
     
     // Música de fundo - criada da mesma forma, mas com o parâmetro loop = true
+    /*
     this.music = this.game.add.audio('music');
     this.music.loop = true;
     // Já iniciamos a música aqui mesmo pra ficar tocando ao fundo
     this.music.play();
+    */
     
     // HUD de score
     // A linha abaixo adiciona um texto na tela, e a próxima faz com o que o texto fique
@@ -204,7 +209,7 @@ GameState.prototype.create = function() {
     this.score = 0;
 }
 
-GameState.prototype.update = function() {
+Level3State.prototype.update = function() {
     // Detecção de colisões
     // Todas as colisões entre os objetos do jogo são avaliadas com arcade.collide() ou 
     // arcade.overlap(). O Phaser irá automaticamente calcular a colisão dos objetos
@@ -291,21 +296,26 @@ GameState.prototype.update = function() {
 // Tratamento da colisão entre o jogador e os diamantes
 // As funções para esse fim sempre recebem os dois objetos que colidiram,
 // e então podemos manipular tais objetos
-GameState.prototype.frutaCollect = function(player, fruta){
+Level3State.prototype.frutaCollect = function(player, fruta){
     // Atualizando estado do jogo e HUD
     this.collectedFrutas++;
     this.score += 100;
     this.scoreText.text = "Score: " + this.score;
     // Condição de vitória: pegar todos os diamantes
     if(this.collectedFrutas == this.totalFrutas){
-    	this.game.state.start('level2');
+	this.level++;
+    	if (this.level > 3){
+       		Globals.score = this.score; // Guardando score na variável global para o próximo estado
+		this.level = 1;
+        	this.game.state.start('win');
+	}
     }
     this.pickupSound.play(); // som de pegar o diamante
     fruta.kill(); // removendo o diamante do jogo
 }
 
 // Tratamento da colisão entre o jogador e os diamantes
-GameState.prototype.batCollision = function(player, bat){
+Level3State.prototype.batCollision = function(player, bat){
     // Se o jogador colidir por baixo e o morcego por cima, isso indica que o jogador pulou
     // em cima do morcego, nesse caso vamos "matar" o morcego
     if(player.body.touching.down && bat.body.touching.up){
@@ -321,18 +331,16 @@ GameState.prototype.batCollision = function(player, bat){
 // Tratamento da colisão entre o jogador e os diamantes
 // Nesse caso, apenas desligamos a colisão com a lava para evitar chamar o evento
 // repetidas vezes, e vamos para a condição de derrota
-GameState.prototype.lavaDeath = function(player, lava){
-    this.level1.setCollision([5, 6, 13], false, this.lavaLayer);
+Level3State.prototype.lavaDeath = function(player, lava){
+    this.level3.setCollision([5, 6, 13], false, this.lavaLayer);
     this.music.stop(); // parando a música
     this.lose();
 }
 
 // Condição de derrota: guarde o score e siga para o próximo estado
-GameState.prototype.lose = function(){
+Level3State.prototype.lose = function(){
     console.debug("No céu tem pão?");
     Globals.score = this.score;
     this.playerDeathSound.play();
     this.game.state.start('lose');
 }
-
-

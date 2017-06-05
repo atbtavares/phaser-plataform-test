@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" source="../glutony_tileset_1.0.tsx"/>
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="32" tileheight="32" nextobjectid="7">
+ <tileset firstgid="1" name="spritesheet_glutony" tilewidth="32" tileheight="32" tilecount="144" columns="9">
+  <image source="spritesheet_glutony.png" trans="ff00ff" width="288" height="512"/>
+ </tileset>
  <layer name="background" width="100" height="25">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,46,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,86,87,86,87,86,87,86,87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -88,4 +90,8 @@
 137,138,136,137,138,136,137,138,136,137,138,136,137,138,136,137,138,139,140,0,0,0,0,140,141,139,140,141,139,140,141,139,140,141,139,140,0,0,140,0,0,0,141,139,140,141,139,0,0,139,140,141,139,140,0,139,140,0,0,140,139,140,141,139,140,141,139,0,0,0,0,0,0,0,141,139,140,141,139,140,141,139,140,141,139,140,141,139,140,141,139,140,141,139,140,141,139,140,141,139
 </data>
  </layer>
+ <objectgroup name="Items">
+  <object id="5" name="player" gid="1" x="128" y="763" width="32" height="32"/>
+  <object id="6" name="fruta" gid="51" x="60" y="734" width="32" height="32"/>
+ </objectgroup>
 </map>

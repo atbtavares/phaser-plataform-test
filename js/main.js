@@ -14,6 +14,8 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, 'phaser-canvas');
 // Adicionando os states do nosso jogos no objeto game
 // Os states já deverão ter sido criados anteriormente
 game.state.add('game', GameState);
+game.state.add('level2', Level2State);
+game.state.add('level3', Level3State);
 game.state.add('win', WinState);
 game.state.add('lose', LoseState);
 
