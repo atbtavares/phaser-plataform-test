@@ -303,12 +303,8 @@ Level3State.prototype.frutaCollect = function(player, fruta){
     this.scoreText.text = "Score: " + this.score;
     // Condição de vitória: pegar todos os diamantes
     if(this.collectedFrutas == this.totalFrutas){
-	this.level++;
-    	if (this.level > 3){
-       		Globals.score = this.score; // Guardando score na variável global para o próximo estado
-		this.level = 1;
-        	this.game.state.start('win');
-	}
+	Globals.score = this.score; // Guardando score na variável global para o próximo estado
+       	this.game.state.start('win');
     }
     this.pickupSound.play(); // som de pegar o diamante
     fruta.kill(); // removendo o diamante do jogo

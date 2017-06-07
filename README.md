@@ -34,6 +34,8 @@ Seta para cima 2 vezes, faz o jogador pular no ar uma segunda vez \
 - [x] Implementar condição de vitória: se jogador pegar todas as frutas passa de fase ou vence o jogo
 - [x] Incluir todas as 3 fases do jogo
 - [x] Criar estado de fim de jogo
+- [ ] Incluir mensagem 'how to play': 'encontre todas as frutas'
+- [ ] Incluir mensagem 'how to play': 'encontre todas as frutas'
 - [ ] Criar estado de menu inicial
 - [ ] Segundo pulo do jogador
 - [ ] Cipós fixos + jogador escalar cipó fixo
