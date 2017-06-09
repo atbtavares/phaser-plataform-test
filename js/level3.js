@@ -125,7 +125,7 @@ Level3State.prototype.create = function() {
     
     // Grupo de diamantes
     this.frutas = this.game.add.physicsGroup();
-    this.level3.createFromObjects('Items', 'fruta', 'items', 51, true, false, this.frutas); // frutas 51 a 53
+    this.level3.createFromObjects('Items', 'fruta', 'items', 51, true, false, this.frutas); 
     // Para cada objeto do grupo, vamos executar uma função
     this.frutas.forEach(function(fruta){
         // body.immovable = true indica que o objeto não é afetado por forças externas

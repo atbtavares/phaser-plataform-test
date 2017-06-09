@@ -1,4 +1,6 @@
-"use strict"; var MenuState = function(game) {}; 
+"use strict"; 
+
+var MenuState = function(game) {}; 
 
 MenuState.prototype.preload = function() 
 {
