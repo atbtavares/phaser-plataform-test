@@ -12,34 +12,8 @@ var Level2State = function(game) {};
 
 // preload: carregar todos os assets necessários para esta scene ou para as próximas
 Level2State.prototype.preload = function() {
-    // Para carregar um sprite, basta informar uma chave e dizer qual é o arquivo
-    //this.game.load.image('mapTiles', 'assets/spritesheets/tiles.png');
-    this.game.load.image('mapTiles', 'assets/spritesheet_glutony.png');
-
-    // Para carregar um spritesheet, é necessário saber a altura e largura de cada sprite, e o número de sprites no arquivo
-    // No caso do player.png, os sprites são de 32x32 pixels, e há 8 sprites no arquivo
-    //this.game.load.spritesheet('player', 'assets/spritesheets/player.png', 32, 32, 8);
-    this.game.load.spritesheet('player', 'assets/player.png', 32, 32);
-    //this.game.load.spritesheet('items', 'assets/spritesheets/items.png', 32, 32, 16);
-    this.game.load.spritesheet('items', 'assets/spritesheet_glutony.png', 32, 32, 144);
-    this.game.load.spritesheet('enemies', 'assets/spritesheets/enemies.png', 32, 32, 12);
-    
     // Para carregar um arquivo do Tiled, o mesmo precisa estar no formato JSON
     this.game.load.tilemap('level2', 'assets/level2.json', null, Phaser.Tilemap.TILED_JSON);
-
-    // Para carregar os sons, basta informar a chave e dizer qual é o arquivo
-    this.game.load.audio('jumpSound', 'assets/sounds/jump.wav');
-    this.game.load.audio('pickupSound', 'assets/sounds/NenadSimic - Menu Selection Click - OpenGameArt.ogg');
-    this.game.load.audio('playerDeath', 'assets/sounds/hurt3.ogg');
-    this.game.load.audio('enemyDeath', 'assets/sounds/hit2.ogg');
-    //this.game.load.audio('music', 'assets/sounds/mystery.wav');
-
-    this.game.load.audio('music', 'assets/sounds/Mathew Pablo Caketown - OpenGameArt.ogg');
-    this.game.load.audio('music2', 'assets/sounds/Mathew Pablo - Curious Critters (Extended Version) - OpenGameArt.ogg');
-    this.game.load.audio('menuMusic', 'assets/sounds/Bruno Belotti - Polka_Loop - OpenGameArt.org.ogg');
-    this.game.load.audio('jumpRope', 'assets/sounds/YoFrankie! (c) 2008, Blender Foundation - Cartoony Jump and Bounce - OpenGameArt.org.ogg');
-    this.game.load.audio('selectSound1', 'assets/sounds/ViRiX - Menu and Item Jingles Sampe 2 - OpenGameArt - Menu2A.ogg');
-    this.game.load.audio('selectSound2', 'assets/sounds/ViRiX - Menu and Item Jingles Sampe 2 - OpenGameArt.org - Item2A.ogg');
 
     this.respawn = game.add.group();
 }
