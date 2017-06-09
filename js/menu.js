@@ -15,8 +15,8 @@ MenuState.prototype.create = function()
    this.cursors = game.input.keyboard.createCursorKeys();
    this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
    this.escKey = game.input.keyboard.addKey(Phaser.Keyboard.ESCAPE);
-   this.btn_jogar= game.add.button(205, 242, 'btn',this.startGame, this, 2, 1, 0);
-   this.btn_creditos= game.add.button(205, 302, 'btn',this.actionOnClick, this, 2, 1, 0);
+   this.btn_jogar = game.add.button(205, 242, 'btn',this.startGame, this, 2, 1, 0);
+   this.btn_creditos = game.add.button(205, 302, 'btn',this.actionOnClick, this, 2, 1, 0);
 }
 
 
@@ -41,12 +41,14 @@ MenuState.prototype.startGame= function()
 
 MenuState.prototype.actionOnClick= function()
 {
-   this.sprite_creditos.visible =! this.sprite_creditos.visible;
    if (this.sprite_creditos.visible){
-   	btn_creditos.reset(205,302);
+   	this.btn_jogar.input.enabled = true;
+   	this.btn_creditos.reset(205,302);
    } else { 
-   	btn_creditos.reset(10,10);
+   	this.btn_jogar.input.enabled = false;
+   	this.btn_creditos.reset(10,45);
    }
+   this.sprite_creditos.visible = !this.sprite_creditos.visible;
 }
 
 /*

@@ -29,6 +29,6 @@ WinState.prototype.create = function() {
 WinState.prototype.update = function() {
     // Detectar se a tecla foi pressionada
     if(this.returnKey.isDown){
-        this.game.state.start('game');
+        this.game.state.start('menu');
     }
 }
