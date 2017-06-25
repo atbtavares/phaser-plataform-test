@@ -66,8 +66,30 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"Ropes",
+         "objects":[
+                {
+                 "gid":145,
+                 "height":50,
+                 "id":14,
+                 "name":"rope",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":4,
+                 "x":415,
+                 "y":432
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":14,
+ "nextobjectid":15,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,
@@ -85,6 +107,19 @@
          "tileheight":32,
          "tilewidth":32,
          "transparentcolor":"#ff00ff"
+        }, 
+        {
+         "columns":1,
+         "firstgid":145,
+         "image":"rope.png",
+         "imageheight":50,
+         "imagewidth":4,
+         "margin":0,
+         "name":"rope",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":50,
+         "tilewidth":4
         }],
  "tilewidth":32,
  "type":"map",

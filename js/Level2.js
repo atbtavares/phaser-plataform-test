@@ -1,5 +1,5 @@
 
-BasicGame.Game = function (game) {
+BasicGame.Level2= function (game) {
 
     //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -26,22 +26,21 @@ BasicGame.Game = function (game) {
 
 };
 
-BasicGame.Game.prototype = {
+BasicGame.Level2.prototype = {
 
     create: function () {
 	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-	this.level1 = this.add.tilemap('level1');
-	this.level1.addTilesetImage('spritesheet_glutony','mapTiles');
-	this.level1.addTilesetImage('rope','rope');
-	this.bgLayer = this.level1.createLayer('background');
-	this.lavaLayer = this.level1.createLayer('middleground');
-	this.wallsLayer = this.level1.createLayer('foreground');
+	this.level2 = this.game.add.tilemap('level2');
+	this.level2.addTilesetImage('spritesheet_glutony','mapTiles');
+	this.bgLayer = this.level2.createLayer('background');
+	this.lavaLayer = this.level2.createLayer('middleground');
+	this.wallsLayer = this.level2.createLayer('foreground');
 
 	this.wallsLayer.resizeWorld();
-        this.level1.setCollisionByExclusion([9, 10, 11, 12, 17, 18, 19, 20], true, this.wallsLayer);
-    	this.level1.setCollision([5, 6, 13], true, this.lavaLayer);
+        this.level2.setCollisionByExclusion([9, 10, 11, 12, 17, 18, 19, 20], true, this.wallsLayer);
+    	this.level2.setCollision([5, 6, 13], true, this.lavaLayer);
     	this.respawn = this.add.group();
-    	this.level1.createFromObjects('Items', 'player', '', 0, true, false, this.respawn);
+    	this.level2.createFromObjects('Items', 'player', '', 0, true, false, this.respawn);
     	this.player = this.game.add.sprite(0, 0, 'player',1);
     	this.player.anchor.setTo(0.5, 0.5);
     	this.game.physics.enable(this.player);
@@ -55,18 +54,13 @@ BasicGame.Game.prototype = {
     	this.player.animations.add('jump', [0]);
 
     	this.keys = this.game.input.keyboard.createCursorKeys();
-
     	this.frutas = this.add.physicsGroup();
-    	this.level1.createFromObjects('Items', 'fruta', 'items', 51, true, false, this.frutas); // frutas 51 a 53
+    	this.level2.createFromObjects('Items', 'fruta', 'items', 51, true, false, this.frutas); // frutas 51 a 53
     	this.frutas.forEach(function(fruta){
         	fruta.body.immovable = true;
         	fruta.animations.add('spin', [51, 52, 53], 3, true);
         	fruta.animations.play('spin');
     	});
-
-    	this.ropes= this.add.physicsGroup();
-    	this.level1.createFromObjects('Ropes', 'rope', 'ropes', 0, true, false, this.ropes); // frutas 51 a 53
-
     	this.jumpSound = this.add.audio('jumpSound');
     	this.pickupSound = this.add.audio('pickupSound');
     	this.playerDeathSound = this.add.audio('playerDeath');
@@ -102,7 +96,9 @@ BasicGame.Game.prototype = {
         	this.player.animations.play('walk');
     	}
     	else {
-        	this.player.body.velocity.x = 0; this.player.animations.play('idle'); }
+        	this.player.body.velocity.x = 0;
+        	this.player.animations.play('idle'); 
+    	}
 	
     	if(this.keys.up.isDown && (this.player.body.touching.down || this.player.body.onFloor())){
 		this.player.body.velocity.y = -400;
@@ -121,7 +117,7 @@ BasicGame.Game.prototype = {
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
         //  Then let's go back to the main menu.
-    	this.music.stop();
+	this.music.stop();
         this.state.start('MainMenu');
 
     },
@@ -133,8 +129,8 @@ BasicGame.Game.prototype = {
     	this.scoreText.text = "Score: " + this.score;
     	// Condição de vitória: pegar todos os diamantes
     	if(this.collectedFrutas == this.totalFrutas){
-    		this.music.stop();
-    		this.state.start('Level2');
+		this.music.stop();
+    		this.state.start('Level3');
     	}
     	this.pickupSound.play(); // som de pegar o diamante
     	fruta.kill(); // removendo o diamante do jogo

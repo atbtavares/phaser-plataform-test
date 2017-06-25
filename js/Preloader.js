@@ -32,8 +32,8 @@ BasicGame.Preloader.prototype = {
 		this.load.spritesheet('playButton', 'assets/btn_inicio.png',200,35);
 		this.load.image('creditos', 'assets/creditos.jpg');
 
-		
 	    	this.load.image('mapTiles', 'assets/spritesheet_glutony.png');
+		this.load.image('rope', 'assets/rope.png');
 	        this.load.spritesheet('player', 'assets/player.png', 32, 32);
 		this.load.spritesheet('items', 'assets/spritesheet_glutony.png', 32, 32, 144);
 		this.load.spritesheet('enemies', 'assets/spritesheets/enemies.png', 32, 32, 12);
